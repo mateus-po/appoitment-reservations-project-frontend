@@ -1,0 +1,15 @@
+#Container {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: space-around;
+}
+#AddConsultations {
+  min-width: 400px;
+}
+#Container div {
+    padding: 30px;
+    border-radius: 10px;
+    -webkit-box-shadow: 1px 0px 14px -7px rgba(96, 109, 242, 1);
+    -moz-box-shadow: 1px 0px 14px -7px rgba(96, 109, 242, 1);
+    box-shadow: 1px 0px 14px -7px rgba(96, 109, 242, 1);
+}

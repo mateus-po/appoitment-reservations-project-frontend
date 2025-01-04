@@ -1,0 +1,14 @@
+<div id="Container">
+  <div id="AddConsultations">
+    <h2>Add Consultations</h2>
+    <app-add-consultations></app-add-consultations>
+  </div>
+  <div id="DoctorCalendar">
+    <h2>Your Calendar</h2>
+    <app-calendar
+      *ngIf="currentUser"
+      [doctorID]="currentUser.id"
+      [currentUser]="currentUser"
+    ></app-calendar>
+  </div>
+</div>

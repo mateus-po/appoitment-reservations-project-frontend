@@ -1,0 +1,54 @@
+.calendar-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 100px repeat(7, 1fr);
+}
+.header-row, .time-row {
+  display: contents;
+}
+.time-slot {
+  text-align: right;
+  padding: 4px;
+}
+.time-slot.current-hour-row {
+  background: #cce5ff;
+  border: 1px solid #007bff;
+}
+.day-header {
+  text-align: center;
+  font-weight: bold;
+  background: #f5f5f5;
+  padding: 4px;
+}
+.day-header.today-column {
+  background: #cce5ff;
+  border: 1px solid #007bff;
+}
+.day-header div {
+  margin: 2px 0;
+}
+.day-slot {
+  background: #fff;
+  min-height: 30px;
+  border: 1px solid #ddd;
+  position: relative;
+}
+.day-slot.today-column {
+  background: #f3f3f3;
+}
+.day-slot.current-time-slot {
+  background: #ffebcc;
+  border: 1px solid #ffa726;
+}
+.appointment {
+  background: #4caf50;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px;
+  height: 100%;
+}

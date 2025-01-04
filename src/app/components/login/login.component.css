@@ -1,0 +1,12 @@
+div {
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+button {
+  margin-top: 12px;
+}
