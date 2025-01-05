@@ -62,6 +62,7 @@ export class CalendarService {
 
               return {
                 date,
+                type: consultation.type
               } as Consultation;
             }
           );

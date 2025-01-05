@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { CalendarService } from "../../../services/calendar/calendar.service";
+import { ReloadService } from "../../../services/reload/reload.service";
 import { NgFor, CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { User } from "../../../types/user";
 import { Consultation } from "../../../types/consultation";
+import { Subscription } from 'rxjs';
 import dayjs from "dayjs";
 
 @Component({
@@ -11,11 +13,13 @@ import dayjs from "dayjs";
   imports: [NgFor, FormsModule, CommonModule],
   templateUrl: "./calendar.component.html",
   styleUrl: "./calendar.component.css",
-  providers: [CalendarService],
+  providers: [CalendarService, ReloadService],
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   @Input() doctorID!: string;
   @Input() currentUser!: User;
+  @Input() reloadService!: ReloadService;
+  private subscription!: Subscription;
 
   days: string[] = [
     "Monday",
@@ -36,6 +40,15 @@ export class CalendarComponent implements OnInit {
   ngOnInit(): void {
     this.setWeek(dayjs());
     this.fetchAppointments();
+    this.subscription = this.reloadService.reload$.subscribe((shouldReload) => {
+      if (shouldReload) {
+        this.fetchAppointments();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   get hourRange(): number[] {
@@ -67,7 +80,6 @@ export class CalendarComponent implements OnInit {
         .getAppoitmentsAsDoctor(this.currentWeek[0],
            dayjs(this.currentWeek[6]).add(24, 'hours').toDate())
         .subscribe((data) => {
-          console.log(data)
           this.appointments = data
         });
       return;
@@ -122,5 +134,9 @@ export class CalendarComponent implements OnInit {
         appointment.date.getMinutes() == parseInt(hoursAndMinutes[1])
       );
     });
+  }
+
+  isAbsence(slot: Consultation) {
+    return slot.type === 'absence'
   }
 }

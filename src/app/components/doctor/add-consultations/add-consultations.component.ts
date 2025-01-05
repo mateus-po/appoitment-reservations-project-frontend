@@ -1,52 +1,62 @@
-import { Component, OnInit } from '@angular/core';
-import { AddAvailabilityService } from '../../../services/availability/addAvailability.service';
-import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
-
+import { Component, OnInit, Input } from "@angular/core";
+import { AddAvailabilityService } from "../../../services/availability/addAvailability.service";
+import { ReloadService } from "../../../services/reload/reload.service";
+import { FormsModule } from "@angular/forms";
+import { NgIf, NgFor } from "@angular/common";
 
 @Component({
-  selector: 'app-add-consultations',
+  selector: "app-add-consultations",
   imports: [FormsModule, NgIf, NgFor],
-  templateUrl: './add-consultations.component.html',
-  styleUrl: './add-consultations.component.css',
-  providers: [AddAvailabilityService]
+  templateUrl: "./add-consultations.component.html",
+  styleUrl: "./add-consultations.component.css",
+  providers: [AddAvailabilityService, ReloadService],
 })
 export class AddConsultationsComponent implements OnInit {
-  weekDays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  @Input() reloadService!: ReloadService;
+
+  weekDays: string[] = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
   hours: string[] = Array.from(
     { length: 48 },
     (_, i) => `${Math.floor(i / 2)}:${i % 2 == 0 ? "00" : "30"}`
-  )
+  );
 
-  activeForm: 'cyclical' | 'oneTime' | 'absence' = 'cyclical';
+  activeForm: "cyclical" | "oneTime" | "absence" = "cyclical";
 
   cyclicalAvailability = {
-    startDate: '',
-    endDate: '',
+    startDate: "",
+    endDate: "",
     days: [],
-    timeSlots: [] as { start: string; end: string }[]
+    timeSlots: [] as { start: string; end: string }[],
   };
 
   oneTimeAvailability = {
-    date: '',
-    timeSlots: [] as { start: string; end: string }[]
+    date: "",
+    timeSlots: [] as { start: string; end: string }[],
   };
 
   absence = {
-    startDate: '',
-    endDate: ''
+    startDate: "",
+    endDate: "",
   };
 
   constructor(private availabilityService: AddAvailabilityService) {}
 
   ngOnInit(): void {}
 
-  toggleForm(form: 'cyclical' | 'oneTime' | 'absence'): void {
+  toggleForm(form: "cyclical" | "oneTime" | "absence"): void {
     this.activeForm = form;
   }
 
   addCyclicalSlot(): void {
-    this.cyclicalAvailability.timeSlots.push({ start: '', end: '' });
+    this.cyclicalAvailability.timeSlots.push({ start: "", end: "" });
   }
 
   removeCyclicalSlot(index: number): void {
@@ -54,14 +64,19 @@ export class AddConsultationsComponent implements OnInit {
   }
 
   saveCyclicalAvailability(): void {
-    this.availabilityService.saveCyclicalAvailability(this.cyclicalAvailability).subscribe(
-      () => alert('Cyclical availability saved!'),
-      (error) => console.error('Error saving cyclical availability', error)
-    );
+    this.availabilityService
+      .saveCyclicalAvailability(this.cyclicalAvailability)
+      .subscribe(
+        () => {
+          alert("Cyclical availability saved!");
+          this.reloadService.triggerReload();
+        },
+        (error) => console.error("Error saving cyclical availability", error)
+      );
   }
 
   addOneTimeSlot(): void {
-    this.oneTimeAvailability.timeSlots.push({ start: '', end: '' });
+    this.oneTimeAvailability.timeSlots.push({ start: "", end: "" });
   }
 
   removeOneTimeSlot(index: number): void {
@@ -69,16 +84,21 @@ export class AddConsultationsComponent implements OnInit {
   }
 
   saveOneTimeAvailability(): void {
-    this.availabilityService.saveOneTimeAvailability(this.oneTimeAvailability).subscribe(
-      () => alert('One-time availability saved!'),
-      (error) => console.error('Error saving one-time availability', error)
-    );
+    this.availabilityService
+      .saveOneTimeAvailability(this.oneTimeAvailability)
+      .subscribe(
+        () => alert("One-time availability saved!"),
+        (error) => console.error("Error saving one-time availability", error)
+      );
   }
 
   saveAbsence(): void {
     this.availabilityService.saveAbsence(this.absence).subscribe(
-      () => alert('Absence saved!'),
-      (error) => console.error('Error saving absence', error)
+      () => {
+        alert("Absence saved!");
+        this.reloadService.triggerReload();
+      },
+      (error) => console.error("Error saving absence", error)
     );
   }
 }

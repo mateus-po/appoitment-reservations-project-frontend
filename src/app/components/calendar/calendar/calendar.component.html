@@ -21,8 +21,7 @@
            [class.current-time-slot]="isCurrentTimeSlot(currentWeek[i], hour)" 
            [class.today-column]="isToday(currentWeek[i])"
            class="day-slot">
-        <div *ngFor="let slot of getSlotsForTime(currentWeek[i], hour)" class="appointment">
-          
+        <div *ngFor="let slot of getSlotsForTime(currentWeek[i], hour)" class="appointment" [class.absence]=isAbsence(slot)>
         </div>
       </div>
     </div>

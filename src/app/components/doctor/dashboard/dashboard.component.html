@@ -1,11 +1,12 @@
 <div id="Container">
-    <app-add-consultations id="AddConsultations"></app-add-consultations>
+    <app-add-consultations id="AddConsultations" [reloadService]=reloadService></app-add-consultations>
   <div id="DoctorCalendar">
     <h2>Your Calendar</h2>
     <app-calendar
       *ngIf="currentUser"
       [doctorID]="currentUser.id"
       [currentUser]="currentUser"
+      [reloadService]=reloadService
     ></app-calendar>
   </div>
 </div>

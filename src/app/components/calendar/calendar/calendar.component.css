@@ -8,7 +8,8 @@
   display: grid;
   grid-template-columns: 100px repeat(7, 1fr);
 }
-.header-row, .time-row {
+.header-row,
+.time-row {
   display: contents;
 }
 .time-slot {
@@ -41,14 +42,18 @@
 .day-slot.today-column {
   background: #f3f3f3;
 }
-.day-slot.current-time-slot {
-  background: #ffebcc;
-  border: 1px solid #ffa726;
-}
 .appointment {
-  background: #4caf50;
+  background-color: #4caf50;
   color: #fff;
   font-size: 12px;
   padding: 2px;
-  height: 100%;
+  height: calc(100% - 4px);
+}
+.day-slot.current-time-slot .appointment, .day-slot.current-time-slot {
+  -webkit-box-shadow: inset 0px 0px 0px 4px rgba(254, 175, 51, 1);
+  -moz-box-shadow: inset 0px 0px 0px 4px rgba(254, 175, 51, 1);
+  box-shadow: inset 0px 0px 0px 4px rgba(254, 175, 51, 1);
+}
+.absence {
+  background-color: #8d22ff !important;
 }
