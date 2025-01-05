@@ -1,0 +1,8 @@
+#Menu {
+    position: sticky;
+    background-color: #007bff;
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}

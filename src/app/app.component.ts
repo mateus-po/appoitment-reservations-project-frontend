@@ -7,7 +7,7 @@ import { User } from './types/user';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HttpClientModule, NgIf],
+  imports: [RouterOutlet, RouterLink, HttpClientModule, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [CurrentUserService]
@@ -15,11 +15,15 @@ import { User } from './types/user';
 export class AppComponent {
   title = 'appoitment-reservations-project-frontend';
   currentUser: User | null = null
+  isAutheticated: boolean = false;
 
   constructor(private currentUserService: CurrentUserService) {
     this.currentUserService.check().subscribe((user: User) =>
     {
       this.currentUser = user
+    })
+    currentUserService.getAuthStatus().subscribe(result => {
+      this.isAutheticated = result
     })
   }
 
