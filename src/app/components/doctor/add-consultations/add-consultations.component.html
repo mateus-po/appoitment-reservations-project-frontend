@@ -1,1 +1,82 @@
-<p>add-consultations works!</p>
+<div class="availability-container">
+    <h2>Define Your Availability</h2>
+
+    <div class="toggle-container">
+      <button (click)="toggleForm('cyclical')" [class.active]="activeForm === 'cyclical'">Cyclical Availability</button>
+      <button (click)="toggleForm('oneTime')" [class.active]="activeForm === 'oneTime'">One-Time Availability</button>
+      <button (click)="toggleForm('absence')" [class.active]="activeForm === 'absence'">Absence</button>
+    </div>
+
+    <div class="availability-section" *ngIf="activeForm === 'cyclical'">
+      <h3>Cyclical Availability</h3>
+      <label>
+        Start Date:
+        <input type="date" [(ngModel)]="cyclicalAvailability.startDate" />
+      </label>
+      <label>
+        End Date:
+        <input type="date" [(ngModel)]="cyclicalAvailability.endDate" />
+      </label>
+      <label>
+        Days of the Week:
+        <select multiple [(ngModel)]="cyclicalAvailability.days">
+          <option *ngFor="let day of weekDays" [value]="day">{{ day }}</option>
+        </select>
+      </label>
+      <div *ngFor="let slot of cyclicalAvailability.timeSlots; let i = index" class="time-slot">
+        <label>
+          From:
+          <select name="timeSlotStart" [(ngModel)]="cyclicalAvailability.timeSlots[i].start">
+            <option *ngFor="let hour of hours">{{ hour }}</option>
+          </select>
+        </label>
+        <label>
+          To:
+          <select name="timeSlotEnd" [(ngModel)]="cyclicalAvailability.timeSlots[i].end">
+            <option *ngFor="let hour of hours">{{ hour }}</option>
+          </select>
+        </label>
+        <button (click)="removeCyclicalSlot(i)">Remove Slot</button>
+      </div>
+      <button (click)="addCyclicalSlot()">Add Time Slot</button>
+      <button (click)="saveCyclicalAvailability()">Save Cyclical Availability</button>
+    </div>
+
+    <div class="availability-section" *ngIf="activeForm === 'oneTime'">
+      <h3>One-Time Availability</h3>
+      <label>
+        Date:
+        <input type="date" [(ngModel)]="oneTimeAvailability.date" />
+      </label>
+      <div *ngFor="let slot of oneTimeAvailability.timeSlots; let i = index" class="time-slot">
+        <label>
+          From:
+          <select name="timeSlotStart" [(ngModel)]="oneTimeAvailability.timeSlots[i].start">
+            <option *ngFor="let hour of hours">{{ hour }}</option>
+          </select>
+        </label>
+        <label>
+          To:
+          <select name="timeSlotEnd" [(ngModel)]="oneTimeAvailability.timeSlots[i].end">
+            <option *ngFor="let hour of hours">{{ hour }}</option>
+          </select>
+        </label>
+        <button (click)="removeOneTimeSlot(i)">Remove Slot</button>
+      </div>
+      <button (click)="addOneTimeSlot()">Add Time Slot</button>
+      <button (click)="saveOneTimeAvailability()">Save One-Time Availability</button>
+    </div>
+
+    <div class="availability-section" *ngIf="activeForm === 'absence'">
+      <h3>Absence</h3>
+      <label>
+        Start Date:
+        <input type="date" [(ngModel)]="absence.startDate" />
+      </label>
+      <label>
+        End Date:
+        <input type="date" [(ngModel)]="absence.endDate" />
+      </label>
+      <button (click)="saveAbsence()">Save Absence</button>
+    </div>
+  </div>
