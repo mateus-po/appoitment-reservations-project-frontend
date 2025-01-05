@@ -87,7 +87,10 @@ export class AddConsultationsComponent implements OnInit {
     this.availabilityService
       .saveOneTimeAvailability(this.oneTimeAvailability)
       .subscribe(
-        () => alert("One-time availability saved!"),
+        () => {
+          alert("One-time availability saved!")
+          this.reloadService.triggerReload();
+        },
         (error) => console.error("Error saving one-time availability", error)
       );
   }
