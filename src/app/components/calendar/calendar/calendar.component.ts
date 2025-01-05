@@ -4,6 +4,7 @@ import { NgFor, CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { User } from "../../../types/user";
 import { Consultation } from "../../../types/consultation";
+import dayjs from "dayjs";
 
 @Component({
   selector: "app-calendar",
@@ -33,7 +34,7 @@ export class CalendarComponent implements OnInit {
   constructor(private calendarService: CalendarService) {}
 
   ngOnInit(): void {
-    this.setWeek(new Date());
+    this.setWeek(dayjs());
     this.fetchAppointments();
   }
 
@@ -49,25 +50,26 @@ export class CalendarComponent implements OnInit {
     return `${displayHour}:${hour % 2 == 0 ? "00" : "30"}`;
   }
 
-  setWeek(startDate: Date): void {
-    const startOfWeek = startDate;
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    startOfWeek.setHours(0);
-    startOfWeek.setMinutes(0);
-    startOfWeek.setSeconds(0);
-    startOfWeek.setMilliseconds(0);
+  setWeek(startDate: dayjs.Dayjs): void {
+    if (startDate.day() === 0) {
+      startDate = startDate.add(-7, 'days')
+    }
+    startDate = startDate.day(1).hour(0).minute(0).second(0).millisecond(0)
+
     this.currentWeek = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(startOfWeek);
-      date.setDate(startOfWeek.getDate() + i);
-      return date;
+      return startDate.add(i, 'days').toDate()
     });
   }
 
   fetchAppointments(): void {
     if (this.currentUser.role == "doctor") {
       this.calendarService
-        .getAppoitmentsAsDoctor(this.currentWeek[0], this.currentWeek[6])
-        .subscribe((data) => (this.appointments = data));
+        .getAppoitmentsAsDoctor(this.currentWeek[0],
+           dayjs(this.currentWeek[6]).add(24, 'hours').toDate())
+        .subscribe((data) => {
+          console.log(data)
+          this.appointments = data
+        });
       return;
     }
     this.calendarService
@@ -79,13 +81,13 @@ export class CalendarComponent implements OnInit {
 
   previousWeek(): void {
     const firstDay = this.currentWeek[0];
-    this.setWeek(new Date(firstDay.setDate(firstDay.getDate() - 7)));
+    this.setWeek(dayjs(firstDay).add(-7, 'days'));
     this.fetchAppointments();
   }
 
   nextWeek(): void {
     const firstDay = this.currentWeek[0];
-    this.setWeek(new Date(firstDay.setDate(firstDay.getDate() + 7)));
+    this.setWeek(dayjs(firstDay).add(7, 'days'));
     this.fetchAppointments();
   }
 

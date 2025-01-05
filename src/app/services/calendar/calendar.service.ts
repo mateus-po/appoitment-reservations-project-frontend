@@ -3,6 +3,10 @@ import { Observable, of, map } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { Consultation, ConsultationResponse } from "../../types/consultation";
+import dayjs from "dayjs";
+// @ts-ignore
+import dayjsPluginUTC from "dayjs-plugin-utc";
+dayjs.extend(dayjsPluginUTC);
 
 @Injectable({
   providedIn: "root",
@@ -33,7 +37,10 @@ export class CalendarService {
     });
   }
 
-  getAppoitmentsAsDoctor(startDate: Date, endDate: Date): Observable<Consultation[]> {
+  getAppoitmentsAsDoctor(
+    startDate: Date,
+    endDate: Date
+  ): Observable<Consultation[]> {
     return this.httpClient
       .get(
         environment.backendURL +
@@ -45,16 +52,14 @@ export class CalendarService {
         map((result) => {
           return (result as ConsultationResponse[]).map(
             (consultation: ConsultationResponse) => {
-              const splitDate = consultation.date.split("-");
-              const date = new Date(
-                Date.UTC(
-                  parseInt(splitDate[0]),
-                  parseInt(splitDate[1]),
-                  parseInt(splitDate[2]),
-                  Math.floor(consultation.timeslot / 2),
-                  (consultation.timeslot % 2) * 30
-                )
-              );
+              const date = dayjs
+              // @ts-ignore
+                .utc(consultation.date)
+                .hour(consultation.timeslot / 2)
+                .minute(30 * (consultation.timeslot % 2))
+                .local()
+                .toDate();
+
               return {
                 date,
               } as Consultation;

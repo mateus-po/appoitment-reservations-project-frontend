@@ -12,7 +12,7 @@
       <div class="time-slot"></div>
       <div *ngFor="let day of days; let i = index" [class.today-column]="isToday(currentWeek[i])" class="day-header">
         <div>{{ day }}</div>
-        <div>{{ currentWeek[i] | date:'MM-dd-yyyy' }}</div>
+        <div>{{ currentWeek[i] | date:'dd-MM-yyyy' }}</div>
       </div>
     </div>
     <div *ngFor="let hour of hourRange" class="time-row" >
