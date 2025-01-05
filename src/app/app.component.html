@@ -1,3 +1,22 @@
-<div *ngIf="currentUser" class="">{{ currentUser.nickname }}</div>
+<div id="Menu">
+  <ng-container
+    *ngIf="isAutheticated; then loggedIn; else loggedOut"
+  ></ng-container>
+</div>
+
+<ng-template #loggedIn>
+  <div>Welcome {{ currentUser?.nickname }}!</div>
+  <div id="Controls">
+    <div id="Calendar">Calendar</div>
+    <div id="LogOut">Log out</div>
+  </div>
+</ng-template>
+
+<ng-template #loggedOut>
+  <div></div>
+  <div id="Controls">
+    <a routerLink="/login"><div id="LogOut">Log In</div></a>
+  </div>
+</ng-template>
 
 <router-outlet />

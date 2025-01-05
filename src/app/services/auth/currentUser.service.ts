@@ -22,7 +22,9 @@ export class CurrentUserService {
       return this.http.get(environment.backendURL + this.loginPath, {withCredentials:true}).pipe(
         tap(user => {
           this.currentUser.next(user as User);
-          this.isAuthenticated.next(true);
+          if (user) {
+            this.isAuthenticated.next(true);
+          }
         })
       );
     }

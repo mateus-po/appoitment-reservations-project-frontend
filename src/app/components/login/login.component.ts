@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
       this.currentUserService.check().subscribe((user: any) => {
         if (user) {
-          this.router.navigate(['/'])
+          this.router.navigate(['/']).then(() => window.location.reload())
         }
       })
     }
