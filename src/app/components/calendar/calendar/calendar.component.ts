@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { CalendarService } from "../../../services/calendar/calendar.service";
 import { ReloadService } from "../../../services/reload/reload.service";
+import { PassSelectedTimeSlotService } from "../../../services/reload/passSelectedTimeSlot.service";
 import { NgFor, CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { User } from "../../../types/user";
@@ -19,6 +20,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   @Input() doctorID!: string;
   @Input() currentUser!: User;
   @Input() reloadService!: ReloadService;
+  @Input() passSelectedTimeSlotService!: PassSelectedTimeSlotService | null;
   private subscription!: Subscription;
 
   days: string[] = [
@@ -87,7 +89,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.calendarService
       .getAppointments(this.doctorID, this.currentWeek[0], this.currentWeek[6])
       .subscribe((data) => {
-        // this.appointments = data;
+        this.appointments = data;
       });
   }
 
@@ -138,5 +140,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   isAbsence(slot: Consultation) {
     return slot.type === 'absence'
+  }
+
+  publishSelectedTimeSlot(date:Date, timeslot: number) {
+    if (!this.passSelectedTimeSlotService) {
+      return
+    }
+
+    this.passSelectedTimeSlotService.triggerReload(date, timeslot)
   }
 }

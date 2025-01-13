@@ -1,0 +1,131 @@
+<div class="doctor-schedule-container">
+  <label for="doctor-select">Select Doctor:</label>
+  <select id="doctor-select" [(ngModel)]="selectedDoctorId">
+    <option *ngFor="let doctor of doctors" [value]="doctor.id">
+      {{ doctor.nickname }}
+    </option>
+  </select>
+
+  <div *ngIf="selectedDoctorId && currentUser" class="calendar-container">
+    <div class="appointment-form">
+      <div *ngIf="!selectedStartTimeSlot">
+        <h1>
+          Select the appoitment start
+        </h1>
+      </div>
+      <div *ngIf="selectedStartTimeSlot">
+        <h2>Rezerwacja Konsultacji</h2>
+
+        <form (ngSubmit)="submitAppointment()" #appointmentForm="ngForm">
+          <!-- Consultation Length -->
+          <div>
+
+            <div id="ConsultationInfo">
+              Selected Date: {{ selectedStartDate | date:'dd-MM-yyyy' }} <br>
+              Selected TimeSlot: {{ formatHour(selectedStartTimeSlot) }}
+            </div>
+
+            <label for="consultationLength">Długość Konsultacji:</label
+            ><br />
+            <select
+              id="consultationLength"
+              [(ngModel)]="appointmentDetails.consultationLength"
+              name="consultationLength"
+              required>
+              <option *ngFor="let i of selectableDurations" value="{{i}}">{{formatDuration(i)}}</option>
+            </select>
+          </div>
+
+          <!-- Consultation Type -->
+          <div>
+            <label for="consultationType">Typ Konsultacji:</label><br />
+            <select
+              id="consultationType"
+              [(ngModel)]="appointmentDetails.consultationType"
+              name="consultationType"
+              required
+            >
+              <option value="">Wybierz typ</option>
+              <option value="Pierwsza wizyta">Pierwsza wizyta</option>
+              <option value="Wizyta kontrolna">Wizyta kontrolna</option>
+              <option value="Choroba przewlekła">Choroba przewlekła</option>
+              <option value="Recepta">Recepta</option>
+            </select>
+          </div>
+
+          <!-- Patient Name -->
+          <div>
+            <label for="patientName">Imię i nazwisko pacjenta:</label><br />
+            <input
+              type="text"
+              id="patientName"
+              [(ngModel)]="appointmentDetails.patientName"
+              name="patientName"
+              required
+            />
+          </div>
+
+          <!-- Patient Gender -->
+          <div>
+            <label for="patientGender">Płeć pacjenta:</label><br />
+            <select
+              id="patientGender"
+              [(ngModel)]="appointmentDetails.patientGender"
+              name="patientGender"
+              required
+            >
+              <option value="">Wybierz płeć</option>
+              <option value="M">Mężczyzna</option>
+              <option value="F">Kobieta</option>
+              <option value="Other">Inna</option>
+            </select>
+          </div>
+
+          <!-- Patient Age -->
+          <div>
+            <label for="patientAge">Wiek pacjenta:</label><br />
+            <input
+              type="number"
+              id="patientAge"
+              [(ngModel)]="appointmentDetails.patientAge"
+              name="patientAge"
+              required
+              min="0"
+            />
+          </div>
+
+          <!-- Doctor Notes -->
+          <div>
+            <label for="doctorNotes">Informacje dla lekarza:</label><br />
+            <textarea
+              id="doctorNotes"
+              [(ngModel)]="appointmentDetails.doctorNotes"
+              name="doctorNotes"
+            ></textarea>
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Submit Button -->
+          <div>
+            <button type="submit" [disabled]="!appointmentForm.form.valid">
+              Zarezerwuj
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div>
+      <app-calendar
+        [currentUser]="currentUser"
+        [reloadService]="reloadService"
+        [passSelectedTimeSlotService]="passSelectedTimeSlotService"
+        [doctorID]="selectedDoctorId"
+      ></app-calendar>
+    </div>
+  </div>
+</div>

@@ -1,22 +1,36 @@
 <div id="Menu">
-  <ng-container
-    *ngIf="isAutheticated; then loggedIn; else loggedOut"
-  ></ng-container>
+  <div id="Left">
+    <a routerLink=""><div class="link-box">Home Page</div></a>
+    <a routerLink="doctors"><div class="link-box">Doctors</div></a>
+    <a *ngIf="isAutheticated && currentUser?.role == 'user'" routerLink="doctor_schedule">
+      <div class="link-box">Doctor Schedules</div>
+    </a>
+    <a
+      *ngIf="isAutheticated && currentUser?.role == 'doctor'"
+      routerLink="dashboard"
+    >
+      <div class="link-box">Manage Schedule</div>
+    </a>
+  </div>
+  <div id="Right">
+    <ng-container
+      *ngIf="isAutheticated; then loggedIn; else loggedOut"
+    ></ng-container>
+  </div>
 </div>
 
 <ng-template #loggedIn>
-  <div>Welcome {{ currentUser?.nickname }}!</div>
-  <div id="Controls">
-    <div id="Calendar">Calendar</div>
-    <div id="LogOut">Log out</div>
-  </div>
+  <div id="NicknameBox">{{ currentUser?.nickname }}</div>
+  <a routerLink="#" (click)="logout()"><div class="link-box">Log Out</div></a>
 </ng-template>
 
 <ng-template #loggedOut>
-  <div></div>
-  <div id="Controls">
-    <a routerLink="/login"><div id="LogOut">Log In</div></a>
-  </div>
+    <a routerLink=""><div class="link-box">Register</div></a>
+    <a routerLink="login"><div class="link-box">Log In</div></a>
 </ng-template>
 
-<router-outlet />
+
+
+<div id="RouterContainer">
+  <router-outlet />
+</div>

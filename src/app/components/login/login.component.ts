@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
       this.currentUserService.check().subscribe((user: any) => {
         if (user) {
-          this.router.navigate(['/']).then(() => window.location.reload())
+          this.router.navigate(['/'])
         }
       })
     }
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     this.errorMessage = null;
     this.loginService.login(this.email, this.password)
       .subscribe(response => {
-        this.router.navigate(['/'])
+        this.router.navigate(['/']).then(() => window.location.reload())
       }, error => {
         this.errorMessage = 'Invalid email or password. Please try again.';
       });
