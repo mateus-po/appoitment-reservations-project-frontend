@@ -39,7 +39,7 @@
         <button (click)="removeCyclicalSlot(i)">Remove Slot</button>
       </div>
       <button (click)="addCyclicalSlot()">Add Time Slot</button>
-      <button (click)="saveCyclicalAvailability()">Save Cyclical Availability</button>
+      <button (click)="saveCyclicalAvailability()" [disabled]="!isCyclicalAvailabilityFormValid()">Save Cyclical Availability</button>
     </div>
 
     <div class="availability-section" *ngIf="activeForm === 'oneTime'">
@@ -64,7 +64,7 @@
         <button (click)="removeOneTimeSlot(i)">Remove Slot</button>
       </div>
       <button (click)="addOneTimeSlot()">Add Time Slot</button>
-      <button (click)="saveOneTimeAvailability()">Save One-Time Availability</button>
+      <button (click)="saveOneTimeAvailability()" [disabled]="isOneTimeAvailibilityFormValid()">Save One-Time Availability</button>
     </div>
 
     <div class="availability-section" *ngIf="activeForm === 'absence'">
@@ -77,6 +77,6 @@
         End Date:
         <input type="date" [(ngModel)]="absence.endDate" />
       </label>
-      <button (click)="saveAbsence()">Save Absence</button>
+      <button (click)="saveAbsence()" [disabled]="isAbsenceFormValid()">Save Absence</button>
     </div>
   </div>
