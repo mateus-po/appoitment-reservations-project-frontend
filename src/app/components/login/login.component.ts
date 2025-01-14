@@ -39,4 +39,8 @@ export class LoginComponent implements OnInit {
         this.errorMessage = 'Invalid email or password. Please try again.';
       });
   }
+
+  isLoginButtonDisabled() {
+    return this.email == '' || this.password == ''
+  }
 }

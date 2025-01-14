@@ -1,15 +1,13 @@
-<div>
-    <h1>Login</h1>
-    <form (ngSubmit)="onSubmit()">
-      <label>Email:
-        <input type="email" [(ngModel)]="email" name="email" required>
-      </label>
-      <br>
-      <label>Password:
-        <input type="password" [(ngModel)]="password" name="password" required>
-      </label>
-      <br>
-      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-      <button type="submit">Login</button>
-    </form>
-  </div>
+<div class="login-container">
+  <h1 class="login-title">Login</h1>
+  <form (ngSubmit)="onSubmit()" class="login-form">
+    <label class="form-label">Email:
+      <input class="form-input" type="email" [(ngModel)]="email" name="email" required>
+    </label>
+    <label class="form-label">Password:
+      <input class="form-input" type="password" [(ngModel)]="password" name="password" required>
+    </label>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <button type="submit" class="login-button" [disabled]="isLoginButtonDisabled()">Login</button>
+  </form>
+</div>
