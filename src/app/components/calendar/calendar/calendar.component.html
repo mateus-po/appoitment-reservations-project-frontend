@@ -36,7 +36,15 @@
         [class.reservation]="isReserved(slot)"
         [class.highlighted]="isHighlighted(currentWeek[i], hour)"
         (click)="publishSelectedTimeSlot(currentWeek[i], hour, slot)"
-      ></div>
+      >
+        <app-calendar-slot *ngIf="isReserved(slot) && slot.reservation"
+        [consultationLength]=slot.reservation.consultationLength
+        [consultationType]=slot.reservation.consultationType
+        [patientName]=slot.reservation.patientData.name
+        [patientGender]=slot.reservation.patientData.gender
+        [patientAge]=slot.reservation.patientData.age
+        [doctorNotes]=slot.reservation.note></app-calendar-slot>
+      </div>
     </div>
   </div>
 </div>

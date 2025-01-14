@@ -7,11 +7,12 @@ import { FormsModule } from "@angular/forms";
 import { User } from "../../../types/user";
 import { Consultation } from "../../../types/consultation";
 import { Subscription } from 'rxjs';
+import { CalendarSlotComponent } from "../calendar-slot/calendar-slot.component";
 import dayjs from "dayjs";
 
 @Component({
   selector: "app-calendar",
-  imports: [NgFor, FormsModule, CommonModule],
+  imports: [NgFor, FormsModule, CommonModule, CalendarSlotComponent],
   templateUrl: "./calendar.component.html",
   styleUrl: "./calendar.component.css",
   providers: [CalendarService, ReloadService],

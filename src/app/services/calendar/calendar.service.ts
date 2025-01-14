@@ -68,7 +68,6 @@ export class CalendarService {
         map((result) => {
           return (result as ConsultationResponse[]).map(
             (consultation: ConsultationResponse) => {
-              console.log(consultation)
               const date = dayjs
               // @ts-ignore
                 .utc(consultation.date)
@@ -80,7 +79,8 @@ export class CalendarService {
               return {
                 date,
                 type: consultation.type,
-                reserved: consultation.reserved
+                reserved: consultation.reserved,
+                reservation: consultation.reservation
               } as Consultation;
             }
           );

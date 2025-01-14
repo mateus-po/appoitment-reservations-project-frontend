@@ -1,0 +1,11 @@
+<div class="calendar-slot" (mouseenter)="showInfo($event)" (mouseleave)="hideInfo()">
+    <div class="info-box" [class.show]="isHovered" [style.top.px]="infoBoxPosition.y" [style.left.px]="infoBoxPosition.x">
+      <p><strong>Consultation Length:</strong> {{ formatDuration(consultationLength) }}</p>
+      <p><strong>Consultation Type:</strong> {{ consultationType }}</p>
+      <p><strong>Patient Name:</strong> {{ patientName }}</p>
+      <p><strong>Gender:</strong> {{ patientGender }}</p>
+      <p><strong>Age:</strong> {{ patientAge }}</p>
+      <p><strong>Doctor Notes:</strong> {{ doctorNotes }}</p>
+    </div>
+  </div>
+  
