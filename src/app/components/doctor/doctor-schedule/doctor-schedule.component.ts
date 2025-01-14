@@ -30,6 +30,8 @@ export class DoctorScheduleComponent implements OnInit, OnDestroy {
   selectedStartDate: Date | null = null;
   selectedStartTimeSlot: number | null = null;
   selectableDurations = Array.from({ length: 8 }, (_, i) => i + 1);
+  selectableGenders = ['Male', 'Female', 'Other']
+  selectableReservationTypes = ['First Consultation', 'Follow-up visit', 'Chronic disease', 'Receipt'];
   private subscription!: Subscription;
 
   appointmentDetails = {

@@ -34,6 +34,10 @@
         class="appointment"
         [class.absence]="isAbsence(slot)"
         [class.reservation]="isReserved(slot)"
+        [class.reservation-type-1]="reservationType(slot) == 1"
+        [class.reservation-type-2]="reservationType(slot) == 2"
+        [class.reservation-type-3]="reservationType(slot) == 3"
+        [class.reservation-type-4]="reservationType(slot) == 4"
         [class.highlighted]="isHighlighted(currentWeek[i], hour)"
         (click)="publishSelectedTimeSlot(currentWeek[i], hour, slot)"
       >

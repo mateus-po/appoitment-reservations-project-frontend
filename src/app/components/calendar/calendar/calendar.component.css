@@ -60,6 +60,18 @@
 .reservation {
   background-color: #007bff !important;
 }
+.reservation.reservation-type-1 {
+  background-color: #ffd61d !important;
+}
+.reservation.reservation-type-2 {
+  background-color: #ff921d !important;
+}
+.reservation.reservation-type-3 {
+  background-color: #ecff1d !important;
+}
+.reservation.reservation-type-4 {
+  background-color: #00d9ff !important;
+}
 .highlighted {
   -webkit-box-shadow: inset 0px 0px 0px 3px rgb(51, 254, 251) !important;
   -moz-box-shadow: inset 0px 0px 0px 3px rgb(51, 254, 251) !important;

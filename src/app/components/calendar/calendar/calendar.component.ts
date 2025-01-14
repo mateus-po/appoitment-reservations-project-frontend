@@ -6,7 +6,7 @@ import { NgFor, CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { User } from "../../../types/user";
 import { Consultation } from "../../../types/consultation";
-import { Subscription } from 'rxjs';
+import { Subscription } from "rxjs";
 import { CalendarSlotComponent } from "../calendar-slot/calendar-slot.component";
 import dayjs from "dayjs";
 
@@ -71,22 +71,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   setWeek(startDate: dayjs.Dayjs): void {
     if (startDate.day() === 0) {
-      startDate = startDate.add(-7, 'days')
+      startDate = startDate.add(-7, "days");
     }
-    startDate = startDate.day(1).hour(0).minute(0).second(0).millisecond(0)
+    startDate = startDate.day(1).hour(0).minute(0).second(0).millisecond(0);
 
     this.currentWeek = Array.from({ length: 7 }, (_, i) => {
-      return startDate.add(i, 'days').toDate()
+      return startDate.add(i, "days").toDate();
     });
   }
 
   fetchAppointments(): void {
     if (this.currentUser.role === "doctor") {
       this.calendarService
-        .getAppoitmentsAsDoctor(this.currentWeek[0],
-           dayjs(this.currentWeek[6]).add(24, 'hours').toDate())
+        .getAppoitmentsAsDoctor(
+          this.currentWeek[0],
+          dayjs(this.currentWeek[6]).add(24, "hours").toDate()
+        )
         .subscribe((data) => {
-          this.appointments = data
+          this.appointments = data;
         });
       return;
     }
@@ -99,13 +101,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   previousWeek(): void {
     const firstDay = this.currentWeek[0];
-    this.setWeek(dayjs(firstDay).add(-7, 'days'));
+    this.setWeek(dayjs(firstDay).add(-7, "days"));
     this.fetchAppointments();
   }
 
   nextWeek(): void {
     const firstDay = this.currentWeek[0];
-    this.setWeek(dayjs(firstDay).add(7, 'days'));
+    this.setWeek(dayjs(firstDay).add(7, "days"));
     this.fetchAppointments();
   }
 
@@ -126,9 +128,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   isCurrentHour(hour: number): boolean {
     const now = new Date();
-    return now.getHours() === Math.floor(hour / 2) &&
-    ((now.getMinutes() >= 30 && hour % 2 == 1) ||
-    (now.getMinutes() < 30 && hour % 2 == 0));
+    return (
+      now.getHours() === Math.floor(hour / 2) &&
+      ((now.getMinutes() >= 30 && hour % 2 == 1) ||
+        (now.getMinutes() < 30 && hour % 2 == 0))
+    );
   }
 
   getSlotsForTime(date: Date, hour: number): Consultation[] {
@@ -143,26 +147,45 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   isAbsence(slot: Consultation) {
-    return slot.type === 'absence'
+    return slot.type === "absence";
   }
 
   isReserved(slot: Consultation) {
-    return slot.reserved
+    return slot.reserved;
   }
 
-  publishSelectedTimeSlot(date:Date, timeslot: number, slot: Consultation) {
-    if (!this.passSelectedTimeSlotService || slot.reserved || slot.type !== "consultation") {
-      return
+  publishSelectedTimeSlot(date: Date, timeslot: number, slot: Consultation) {
+    if (
+      !this.passSelectedTimeSlotService ||
+      slot.reserved ||
+      slot.type !== "consultation"
+    ) {
+      return;
     }
-    if (this.currentUser.role !== 'doctor') {
-      this.highlightedDate = date
-      this.highlightedHour = timeslot
+    if (this.currentUser.role !== "doctor") {
+      this.highlightedDate = date;
+      this.highlightedHour = timeslot;
     }
 
-    this.passSelectedTimeSlotService.triggerReload(date, timeslot)
+    this.passSelectedTimeSlotService.triggerReload(date, timeslot);
   }
 
-  isHighlighted(date:Date, timeslot: number) {
-    return date === this.highlightedDate && timeslot === this.highlightedHour
+  isHighlighted(date: Date, timeslot: number) {
+    return date === this.highlightedDate && timeslot === this.highlightedHour;
+  }
+
+  reservationType(slot: Consultation): number {
+    if (!slot.reservation) {
+      return -1;
+    }
+
+    return (
+      [
+        "First Consultation",
+        "Follow-up visit",
+        "Chronic disease",
+        "Receipt",
+      ].indexOf(slot.reservation.consultationType) + 1
+    );
   }
 }
