@@ -27,6 +27,7 @@
       *ngFor="let day of days; let i = index"
       [class.current-time-slot]="isCurrentTimeSlot(currentWeek[i], hour)"
       [class.today-column]="isToday(currentWeek[i])"
+      [class.is-past]="isPast(currentWeek[i], hour)"
       class="day-slot"
     >
       <div
@@ -38,6 +39,7 @@
         [class.reservation-type-2]="reservationType(slot) == 2"
         [class.reservation-type-3]="reservationType(slot) == 3"
         [class.reservation-type-4]="reservationType(slot) == 4"
+        [class.is-past]="isPast(currentWeek[i], hour)"
         [class.highlighted]="isHighlighted(currentWeek[i], hour)"
         (click)="publishSelectedTimeSlot(currentWeek[i], hour, slot)"
       >

@@ -40,7 +40,7 @@
   position: relative;
 }
 .day-slot.today-column {
-  background: #f3f3f3;
+  background: #f8ffe0;
 }
 .appointment {
   background-color: #4caf50;
@@ -53,6 +53,9 @@
   -webkit-box-shadow: inset 0px 0px 0px 4px rgba(254, 175, 51, 1);
   -moz-box-shadow: inset 0px 0px 0px 4px rgba(254, 175, 51, 1);
   box-shadow: inset 0px 0px 0px 4px rgba(254, 175, 51, 1);
+}
+.is-past, .day-slot.today-column.is-past {
+  background-color: #c6c6c6;
 }
 .absence {
   background-color: #8d22ff !important;
@@ -71,6 +74,13 @@
 }
 .reservation.reservation-type-4 {
   background-color: #00d9ff !important;
+}
+.appointment.is-past {
+  background-color: #909e90;
+
+}
+.reservation.is-past {
+  background-color: #526245 !important;
 }
 .highlighted {
   -webkit-box-shadow: inset 0px 0px 0px 3px rgb(51, 254, 251) !important;

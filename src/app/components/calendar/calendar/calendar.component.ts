@@ -188,4 +188,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
       ].indexOf(slot.reservation.consultationType) + 1
     );
   }
+
+  isPast(date: Date, timeslot:number) {
+    const d = dayjs(date).hour(Math.floor(timeslot / 2)).minute(30 * (timeslot % 2))
+    return d.isBefore(dayjs().add(-30, 'minutes'))
+  }
 }
