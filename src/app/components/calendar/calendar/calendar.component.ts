@@ -37,6 +37,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   currentWeek: Date[] = [];
   appointments: Consultation[] = [];
 
+  highlightedDate: Date | null = null;
+  highlightedHour: number | null = null;
+
   constructor(private calendarService: CalendarService) {}
 
   ngOnInit(): void {
@@ -77,7 +80,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   fetchAppointments(): void {
-    if (this.currentUser.role == "doctor") {
+    if (this.currentUser.role === "doctor") {
       this.calendarService
         .getAppoitmentsAsDoctor(this.currentWeek[0],
            dayjs(this.currentWeek[6]).add(24, 'hours').toDate())
@@ -142,11 +145,23 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return slot.type === 'absence'
   }
 
-  publishSelectedTimeSlot(date:Date, timeslot: number) {
-    if (!this.passSelectedTimeSlotService) {
+  isReserved(slot: Consultation) {
+    return slot.reserved
+  }
+
+  publishSelectedTimeSlot(date:Date, timeslot: number, slot: Consultation) {
+    if (!this.passSelectedTimeSlotService || slot.reserved || slot.type !== "consultation") {
       return
+    }
+    if (this.currentUser.role !== 'doctor') {
+      this.highlightedDate = date
+      this.highlightedHour = timeslot
     }
 
     this.passSelectedTimeSlotService.triggerReload(date, timeslot)
+  }
+
+  isHighlighted(date:Date, timeslot: number) {
+    return date === this.highlightedDate && timeslot === this.highlightedHour
   }
 }

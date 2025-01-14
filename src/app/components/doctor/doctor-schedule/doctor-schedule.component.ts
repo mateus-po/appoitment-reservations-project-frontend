@@ -64,7 +64,6 @@ export class DoctorScheduleComponent implements OnInit, OnDestroy {
         if (data.length == 0) {
           return;
         }
-        console.log(data);
         this.selectedStartDate = data[0] as Date;
         this.selectedStartTimeSlot = data[1] as number;
       }
@@ -104,7 +103,14 @@ export class DoctorScheduleComponent implements OnInit, OnDestroy {
       doctorId: this.selectedDoctorId,
       startDate: this.selectedStartDate?.toDateString(),
       startTimeSlot: this.formatHour(this.selectedStartTimeSlot ?? 0)
-    }).subscribe(response => console.log(response))
+    }).subscribe(response => {
+      if (response.error) {
+        this.errorMessage = response.error
+        return
+      }
+      this.reloadService.triggerReload()
+      alert('Reservation created successfully')
+    })
   }
 
   hasTimeConflict(length: number): boolean {

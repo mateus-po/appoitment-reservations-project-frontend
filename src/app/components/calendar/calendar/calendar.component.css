@@ -57,3 +57,11 @@
 .absence {
   background-color: #8d22ff !important;
 }
+.reservation {
+  background-color: #007bff !important;
+}
+.highlighted {
+  -webkit-box-shadow: inset 0px 0px 0px 3px rgb(51, 254, 251) !important;
+  -moz-box-shadow: inset 0px 0px 0px 3px rgb(51, 254, 251) !important;
+  box-shadow: inset 0px 0px 0px 3px rgb(51, 254, 251) !important;
+}

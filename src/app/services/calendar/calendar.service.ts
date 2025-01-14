@@ -43,7 +43,8 @@ export class CalendarService {
 
               return {
                 date,
-                type: consultation.type
+                type: consultation.type,
+                reserved: consultation.reserved
               } as Consultation;
             }
           );
@@ -67,6 +68,7 @@ export class CalendarService {
         map((result) => {
           return (result as ConsultationResponse[]).map(
             (consultation: ConsultationResponse) => {
+              console.log(consultation)
               const date = dayjs
               // @ts-ignore
                 .utc(consultation.date)
@@ -77,7 +79,8 @@ export class CalendarService {
 
               return {
                 date,
-                type: consultation.type
+                type: consultation.type,
+                reserved: consultation.reserved
               } as Consultation;
             }
           );
