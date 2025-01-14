@@ -13,7 +13,6 @@ import { User } from './types/user';
   providers: [CurrentUserService]
 })
 export class AppComponent {
-  title = 'appoitment-reservations-project-frontend';
   currentUser: User | null = null
   isAutheticated: boolean = false;
 

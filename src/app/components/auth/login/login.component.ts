@@ -1,34 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../../services/auth/login.service';
-import { HttpClientModule } from "@angular/common/http";
+import { Component } from '@angular/core';
+import { LoginService } from '../../../services/auth/login.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { CurrentUserService } from '../../services/auth/currentUser.service';
 
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, HttpClientModule, NgIf],
+  imports: [FormsModule, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  providers: [LoginService, Router, CurrentUserService]
+  providers: [LoginService, Router]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string | null = null;
 
   constructor(private loginService: LoginService,
-     private router: Router, private currentUserService: CurrentUserService) {}
-
-  ngOnInit() {
-      this.currentUserService.check().subscribe((user: any) => {
-        if (user) {
-          this.router.navigate(['/'])
-        }
-      })
-    }
+     private router: Router) {}
 
   onSubmit() {
     this.errorMessage = null;
@@ -38,5 +28,9 @@ export class LoginComponent implements OnInit {
       }, error => {
         this.errorMessage = 'Invalid email or password. Please try again.';
       });
+  }
+
+  isLoginButtonDisabled() {
+    return this.email == '' || this.password == ''
   }
 }

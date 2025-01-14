@@ -158,7 +158,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (
       !this.passSelectedTimeSlotService ||
       slot.reserved ||
-      slot.type !== "consultation"
+      slot.type !== "consultation" ||
+      dayjs(date)
+        .hour(Math.floor(timeslot / 2))
+        .minute(30 * (timeslot % 2))
+        .isBefore(dayjs())
     ) {
       return;
     }
@@ -189,8 +193,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     );
   }
 
-  isPast(date: Date, timeslot:number) {
-    const d = dayjs(date).hour(Math.floor(timeslot / 2)).minute(30 * (timeslot % 2))
-    return d.isBefore(dayjs().add(-30, 'minutes'))
+  isPast(date: Date, timeslot: number) {
+    const d = dayjs(date)
+      .hour(Math.floor(timeslot / 2))
+      .minute(30 * (timeslot % 2));
+    return d.isBefore(dayjs().add(-30, "minutes"));
   }
 }
