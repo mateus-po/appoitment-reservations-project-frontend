@@ -1,0 +1,11 @@
+
+.calendar-container {
+    display: flex;
+    justify-content: space-around;
+}
+#ConsultationInfo {
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: aliceblue;
+}

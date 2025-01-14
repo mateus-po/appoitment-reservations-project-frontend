@@ -1,0 +1,8 @@
+<h1>Our doctors</h1>
+
+<div class="doctors-container">
+    <div class="doctor-box" *ngFor="let doctor of doctors">
+      <h3>{{ doctor.nickname }}</h3>
+      <p *ngIf="doctor.description"><strong>Description:</strong> {{ doctor.description }}</p>
+    </div>
+  </div>

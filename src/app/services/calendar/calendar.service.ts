@@ -12,7 +12,7 @@ dayjs.extend(dayjsPluginUTC);
   providedIn: "root",
 })
 export class CalendarService {
-  private appoitmentsEndpoint = "";
+  private appoitmentsEndpoint = "/consultations/as_user";
   private appoitmentsAsDoctorEndpoint = "/consultations/as_doctor";
 
   constructor(private httpClient: HttpClient) {}
@@ -21,21 +21,37 @@ export class CalendarService {
     doctorID: string,
     startDate: Date,
     endDate: Date
-  ): Observable<{ [key: string]: string[] }> {
-    return of({
-      Monday: [
-        "10:30 Appointment A",
-        "11:00 Appoitment Z",
-        "14:00 Appointment B",
-      ],
-      Tuesday: ["11:00 Appointment C", "15:30 Appointment D"],
-      Wednesday: [],
-      Thursday: ["13:00 Appointment E"],
-      Friday: ["16:30 Appointment F"],
-      Saturday: [],
-      Sunday: ["12:00 Appointment G"],
-    });
+  ): Observable<Consultation[]> {
+    return this.httpClient
+      .get(
+        environment.backendURL +
+          this.appoitmentsEndpoint +
+          `/?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}&doctorId=${doctorID}`,
+        { withCredentials: true }
+      )
+      .pipe(
+        map((result) => {
+          return (result as ConsultationResponse[]).map(
+            (consultation: ConsultationResponse) => {
+              const date = dayjs
+              // @ts-ignore
+                .utc(consultation.date)
+                .hour(consultation.timeslot / 2)
+                .minute(30 * (consultation.timeslot % 2))
+                .local()
+                .toDate();
+
+              return {
+                date,
+                type: consultation.type,
+                reserved: consultation.reserved
+              } as Consultation;
+            }
+          );
+        })
+      );
   }
+
 
   getAppoitmentsAsDoctor(
     startDate: Date,
@@ -62,7 +78,9 @@ export class CalendarService {
 
               return {
                 date,
-                type: consultation.type
+                type: consultation.type,
+                reserved: consultation.reserved,
+                reservation: consultation.reservation
               } as Consultation;
             }
           );

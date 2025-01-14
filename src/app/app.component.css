@@ -1,8 +1,31 @@
 #Menu {
     position: sticky;
     background-color: #007bff;
-    padding: 20px;
     color: white;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+}
+#Left, #Right {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.link-box, a {
+    text-decoration: none;
+    color: white;
+}
+.link-box {
+    padding: 20px;
+}
+.link-box:hover {
+    cursor: pointer;
+    background-color: #3c9aff;
+}
+#NicknameBox {
+    padding: 20px;
+}
+#RouterContainer {
+    padding: 20px;
 }

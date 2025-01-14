@@ -1,28 +1,56 @@
 <div class="calendar-controls">
-    <button (click)="previousWeek()">Previous Week</button>
-    <button (click)="nextWeek()">Next Week</button>
-    <label>
-      Hour Range:
-      <input type="number" [(ngModel)]="startHour" min="0" max="23"> - 
-      <input type="number" [(ngModel)]="endHour" min="1" max="24">
-    </label>
-  </div>
-  <div class="calendar-grid">
-    <div class="header-row">
-      <div class="time-slot"></div>
-      <div *ngFor="let day of days; let i = index" [class.today-column]="isToday(currentWeek[i])" class="day-header">
-        <div>{{ day }}</div>
-        <div>{{ currentWeek[i] | date:'dd-MM-yyyy' }}</div>
-      </div>
-    </div>
-    <div *ngFor="let hour of hourRange" class="time-row" >
-      <div class="time-slot" [class.current-hour-row]="isCurrentHour(hour)">{{ formatHour(hour) }}</div>
-      <div *ngFor="let day of days; let i = index" 
-           [class.current-time-slot]="isCurrentTimeSlot(currentWeek[i], hour)" 
-           [class.today-column]="isToday(currentWeek[i])"
-           class="day-slot">
-        <div *ngFor="let slot of getSlotsForTime(currentWeek[i], hour)" class="appointment" [class.absence]=isAbsence(slot)>
-        </div>
-      </div>
+  <button (click)="previousWeek()">Previous Week</button>
+  <button (click)="nextWeek()">Next Week</button>
+  <label>
+    Hour Range:
+    <input type="number" [(ngModel)]="startHour" min="0" max="23" /> -
+    <input type="number" [(ngModel)]="endHour" min="1" max="24" />
+  </label>
+</div>
+<div class="calendar-grid">
+  <div class="header-row">
+    <div class="time-slot"></div>
+    <div
+      *ngFor="let day of days; let i = index"
+      [class.today-column]="isToday(currentWeek[i])"
+      class="day-header"
+    >
+      <div>{{ day }}</div>
+      <div>{{ currentWeek[i] | date : "dd-MM-yyyy" }}</div>
     </div>
   </div>
+  <div *ngFor="let hour of hourRange" class="time-row">
+    <div class="time-slot" [class.current-hour-row]="isCurrentHour(hour)">
+      {{ formatHour(hour) }}
+    </div>
+    <div
+      *ngFor="let day of days; let i = index"
+      [class.current-time-slot]="isCurrentTimeSlot(currentWeek[i], hour)"
+      [class.today-column]="isToday(currentWeek[i])"
+      [class.is-past]="isPast(currentWeek[i], hour)"
+      class="day-slot"
+    >
+      <div
+        *ngFor="let slot of getSlotsForTime(currentWeek[i], hour)"
+        class="appointment"
+        [class.absence]="isAbsence(slot)"
+        [class.reservation]="isReserved(slot)"
+        [class.reservation-type-1]="reservationType(slot) == 1"
+        [class.reservation-type-2]="reservationType(slot) == 2"
+        [class.reservation-type-3]="reservationType(slot) == 3"
+        [class.reservation-type-4]="reservationType(slot) == 4"
+        [class.is-past]="isPast(currentWeek[i], hour)"
+        [class.highlighted]="isHighlighted(currentWeek[i], hour)"
+        (click)="publishSelectedTimeSlot(currentWeek[i], hour, slot)"
+      >
+        <app-calendar-slot *ngIf="isReserved(slot) && slot.reservation"
+        [consultationLength]=slot.reservation.consultationLength
+        [consultationType]=slot.reservation.consultationType
+        [patientName]=slot.reservation.patientData.name
+        [patientGender]=slot.reservation.patientData.gender
+        [patientAge]=slot.reservation.patientData.age
+        [doctorNotes]=slot.reservation.note></app-calendar-slot>
+      </div>
+    </div>
+  </div>
+</div>
