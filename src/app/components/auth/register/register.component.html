@@ -1,0 +1,20 @@
+<div class="signup-container">
+    <h1 class="signup-title">Sign Up</h1>
+    <form (ngSubmit)="onSubmit()" class="signup-form">
+      <label class="form-label">Nickname:
+        <input class="form-input" type="text" [(ngModel)]="nickname" name="nickname" required>
+      </label>
+      <label class="form-label">Email:
+        <input class="form-input" type="email" [(ngModel)]="email" name="email" required>
+      </label>
+      <label class="form-label">Password:
+        <input class="form-input" type="password" [(ngModel)]="password" name="password" required>
+      </label>
+      <label class="form-label">Confirm Password:
+        <input class="form-input" type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+      </label>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <button type="submit" class="signup-button" [disabled]="isSignUpButtonDisabled()">Sign Up</button>
+    </form>
+  </div>
+  
