@@ -1,130 +1,136 @@
 <div class="doctor-schedule-container">
-  <label for="doctor-select">Select Doctor:</label>
-  <select id="doctor-select" [(ngModel)]="selectedDoctorId">
+  <label for="doctor-select" class="form-label">Select Doctor:</label>
+  <select id="doctor-select" class="form-input" [(ngModel)]="selectedDoctorId">
     <option *ngFor="let doctor of doctors" [value]="doctor.id">
       {{ doctor.nickname }}
     </option>
   </select>
 
   <div *ngIf="selectedDoctorId && currentUser" class="calendar-container">
-    <div class="appointment-form">
-      <div *ngIf="!selectedStartTimeSlot">
-        <h1>Select the appoitment start</h1>
-      </div>
-      <div *ngIf="selectedStartTimeSlot">
-        <h2>Book a consultation</h2>
-
-        <form (ngSubmit)="submitAppointment()" #appointmentForm="ngForm">
-          <div>
+    <div class="appointment-container">
+      <div class="appointment-form">
+        <div *ngIf="!selectedStartTimeSlot" class="select-start-message">
+          <h1>Select the appointment start</h1>
+        </div>
+        <div *ngIf="selectedStartTimeSlot">
+          <h2>Book a Consultation</h2>
+          <form (ngSubmit)="submitAppointment()" #appointmentForm="ngForm">
             <div id="ConsultationInfo">
-              Selected Date: <b>{{ selectedStartDate | date : "dd-MM-yyyy" }}</b>
-              <br />
-              Selected TimeSlot: <b>{{ formatHour(selectedStartTimeSlot) }}</b>
+              <p>
+                Selected Date: <b>{{ selectedStartDate | date: "dd-MM-yyyy" }}</b><br />
+                Selected TimeSlot: <b>{{ formatHour(selectedStartTimeSlot) }}</b>
+              </p>
             </div>
 
-            <label for="consultationLength">Consultation length:</label><br />
-            <select
-              id="consultationLength"
-              [(ngModel)]="appointmentDetails.consultationLength"
-              name="consultationLength"
-              required
-            >
-              <option *ngFor="let i of selectableDurations" value="{{ i }}">
-                {{ formatDuration(i) }}
-              </option>
-            </select>
-          </div>
-
-          <div>
-            <label for="consultationType">Consultation Type:</label><br />
-            <select
-              id="consultationType"
-              [(ngModel)]="appointmentDetails.consultationType"
-              name="consultationType"
-              required
-            >
-              <option value="">Select Type</option>
-              <option
-                *ngFor="let reservationType of selectableReservationTypes"
-                value="{{ reservationType }}"
+            <div class="form-group">
+              <label for="consultationLength" class="form-label">Consultation Length:</label>
+              <select
+                id="consultationLength"
+                class="form-input"
+                [(ngModel)]="appointmentDetails.consultationLength"
+                name="consultationLength"
+                required
               >
-                {{ reservationType }}
-              </option>
-            </select>
-          </div>
+                <option *ngFor="let i of selectableDurations" value="{{ i }}">
+                  {{ formatDuration(i) }}
+                </option>
+              </select>
+            </div>
 
-          <div>
-            <label for="patientName">Patient Name:</label><br />
-            <input
-              type="text"
-              id="patientName"
-              [(ngModel)]="appointmentDetails.patientName"
-              name="patientName"
-              required
-            />
-          </div>
+            <div class="form-group">
+              <label for="consultationType" class="form-label">Consultation Type:</label>
+              <select
+                id="consultationType"
+                class="form-input"
+                [(ngModel)]="appointmentDetails.consultationType"
+                name="consultationType"
+                required
+              >
+                <option value="">Select Type</option>
+                <option
+                  *ngFor="let reservationType of selectableReservationTypes"
+                  value="{{ reservationType }}"
+                >
+                  {{ reservationType }}
+                </option>
+              </select>
+            </div>
 
-          <div>
-            <label for="patientGender">Patient Gender:</label><br />
-            <select
-              id="patientGender"
-              [(ngModel)]="appointmentDetails.patientGender"
-              name="patientGender"
-              required
-            >
-              <option value="">Select gender</option>
-              <option
-              *ngFor="let genderType of selectableGenders"
-              value="{{ genderType }}"
-            >
-              {{ genderType }}
-            </option>
-            </select>
-          </div>
+            <div class="form-group">
+              <label for="patientName" class="form-label">Patient Name:</label>
+              <input
+                type="text"
+                id="patientName"
+                class="form-input"
+                [(ngModel)]="appointmentDetails.patientName"
+                name="patientName"
+                required
+              />
+            </div>
 
-          <div>
-            <label for="patientAge">Patinet age:</label><br />
-            <input
-              type="number"
-              id="patientAge"
-              [(ngModel)]="appointmentDetails.patientAge"
-              name="patientAge"
-              required
-              min="0"
-            />
-          </div>
+            <div class="form-group">
+              <label for="patientGender" class="form-label">Patient Gender:</label>
+              <select
+                id="patientGender"
+                class="form-input"
+                [(ngModel)]="appointmentDetails.patientGender"
+                name="patientGender"
+                required
+              >
+                <option value="">Select Gender</option>
+                <option
+                  *ngFor="let genderType of selectableGenders"
+                  value="{{ genderType }}"
+                >
+                  {{ genderType }}
+                </option>
+              </select>
+            </div>
 
-          <div>
-            <label for="doctorNotes">Note for doctor:</label><br />
-            <textarea
-              id="doctorNotes"
-              [(ngModel)]="appointmentDetails.doctorNotes"
-              name="doctorNotes"
-            ></textarea>
-          </div>
+            <div class="form-group">
+              <label for="patientAge" class="form-label">Patient Age:</label>
+              <input
+                type="number"
+                id="patientAge"
+                class="form-input"
+                [(ngModel)]="appointmentDetails.patientAge"
+                name="patientAge"
+                required
+                min="0"
+              />
+            </div>
 
-          <!-- Error Message -->
-          <div *ngIf="errorMessage" class="error-message">
-            {{ errorMessage }}
-          </div>
+            <div class="form-group">
+              <label for="doctorNotes" class="form-label">Note for Doctor:</label>
+              <textarea
+                id="doctorNotes"
+                class="form-input"
+                [(ngModel)]="appointmentDetails.doctorNotes"
+                name="doctorNotes"
+              ></textarea>
+            </div>
 
-          <!-- Submit Button -->
-          <div>
-            <button type="submit" [disabled]="!appointmentForm.form.valid">
-              Make a reservation
-            </button>
-          </div>
-        </form>
+            <div *ngIf="errorMessage" class="error-message">
+              {{ errorMessage }}
+            </div>
+
+            <div>
+              <button type="submit" class="action-button" [disabled]="!appointmentForm.form.valid">
+                Make a Reservation
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <app-calendar
-        [currentUser]="currentUser"
-        [reloadService]="reloadService"
-        [passSelectedTimeSlotService]="passSelectedTimeSlotService"
-        [doctorID]="selectedDoctorId"
-      ></app-calendar>
+      <div class="calendar-section">
+        <app-calendar
+          [currentUser]="currentUser"
+          [reloadService]="reloadService"
+          [passSelectedTimeSlotService]="passSelectedTimeSlotService"
+          [doctorID]="selectedDoctorId"
+        ></app-calendar>
+      </div>
     </div>
   </div>
 </div>
