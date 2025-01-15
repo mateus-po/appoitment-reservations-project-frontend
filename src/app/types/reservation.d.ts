@@ -1,4 +1,5 @@
 export type Reservation = {
+  _id: string,
   firstConsultationId: string;
   consultationLength: number;
   consultationType: string;
@@ -8,4 +9,8 @@ export type Reservation = {
     age: number;
     gender: string;
   };
+  cancelled: boolean;
+  timeslot: number;
+  date: string;
+  doctorNickname: string;
 };

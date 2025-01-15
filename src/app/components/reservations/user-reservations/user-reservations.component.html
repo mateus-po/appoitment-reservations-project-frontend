@@ -1,0 +1,27 @@
+<div class="reservations-list">
+    <div 
+      *ngFor="let reservation of reservations" 
+      [class.is-cancelled]="reservation.cancelled" 
+      class="reservation-item"
+    >
+      <div class="reservation-details">
+        <p><strong>Patient Name:</strong> {{ reservation.patientData.name }}</p>
+        <p><strong>Gender:</strong> {{ reservation.patientData.gender }}</p>
+        <p><strong>Age:</strong> {{ reservation.patientData.age }}</p>
+        <p><strong>Consultation Type:</strong> {{ reservation.consultationType }}</p>
+        <p><strong>Consultation Length:</strong> {{ formatDuration(reservation.consultationLength) }}</p>
+        <p><strong>Doctor Nickname:</strong> {{ reservation.doctorNickname }}</p>
+        <p><strong>Consultation time:</strong> {{ formatTime(reservation.date, reservation.timeslot) }}</p>
+        <p><strong>Note:</strong> {{ reservation.note }}</p>
+      </div>
+      <div class="reservation-actions">
+        <button 
+          *ngIf="!reservation.cancelled" 
+          (click)="cancelReservation(reservation._id)"
+        >
+          Cancel Reservation
+        </button>
+        <p *ngIf="reservation.cancelled" class="cancelled-text">Reservation Cancelled</p>
+      </div>
+    </div>
+  </div>

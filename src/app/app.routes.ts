@@ -8,12 +8,14 @@ import { AuthGuard } from "./services/auth/authGuard.service";
 import { LoggedOutGuard } from "./services/auth/loggedOutGuard.service";
 import { DoctorsListComponent } from "./components/doctor/doctors-list/doctors-list.component";
 import { DoctorScheduleComponent } from "./components/doctor/doctor-schedule/doctor-schedule.component";
+import { UserReservationsComponent } from "./components/reservations/user-reservations/user-reservations.component";
 
 
 export const routes: Routes = [
   { path: "", component: HomePageComponent },
   { path: "doctors", component: DoctorsListComponent },
   { path: "doctor_schedule", component: DoctorScheduleComponent, canActivate: [AuthGuard] },
+  { path: "my-registrations", component: UserReservationsComponent, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent, canActivate: [LoggedOutGuard] },
   { path: "register", component: RegisterComponent, canActivate: [LoggedOutGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardDoctor]},

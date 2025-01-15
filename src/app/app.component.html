@@ -20,6 +20,9 @@
 </div>
 
 <ng-template #loggedIn>
+  <a *ngIf="currentUser?.role == 'user'" routerLink="my-registrations">
+    <div class="link-box">My Registrations</div>
+  </a>
   <div id="NicknameBox">{{ currentUser?.nickname }}</div>
   <a routerLink="#" (click)="logout()"><div class="link-box">Log Out</div></a>
 </ng-template>
