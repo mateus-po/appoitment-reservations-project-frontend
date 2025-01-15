@@ -17,6 +17,7 @@
     >
       <div>{{ day }}</div>
       <div>{{ currentWeek[i] | date : "dd-MM-yyyy" }}</div>
+      <div *ngIf="currentUser.role == 'doctor'">Reserved: {{getReservationsForDay(currentWeek[i])}}</div>
     </div>
   </div>
   <div *ngFor="let hour of hourRange" class="time-row">

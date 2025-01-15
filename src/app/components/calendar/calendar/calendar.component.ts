@@ -135,6 +135,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     );
   }
 
+  getReservationsForDay(date: Date): number {
+    let result = 0
+
+    for (let appointment of this.appointments) {
+      if (date.getDate() == appointment.date.getDate() && appointment.reservation) {
+        result += 1
+      }
+    }
+
+    return result
+  }
+
   getSlotsForTime(date: Date, hour: number): Consultation[] {
     const hoursAndMinutes = this.formatHour(hour).split(":");
     return this.appointments.filter((appointment) => {
