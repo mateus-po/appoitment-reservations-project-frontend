@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { CalendarService } from "../../../services/calendar/calendar.service";
 import { ReloadService } from "../../../services/reload/reload.service";
 import { PassSelectedTimeSlotService } from "../../../services/reload/passSelectedTimeSlot.service";
@@ -57,6 +57,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['doctorID']) {
+  //     this.doctorID = changes['doctorID'].currentValue
+  //     this.fetchAppointments();
+  //   }
+  // }
+
   get hourRange(): number[] {
     return Array.from(
       { length: this.endHour * 2 - this.startHour * 2 },
@@ -93,7 +100,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
       return;
     }
     this.calendarService
-      .getAppointments(this.doctorID, this.currentWeek[0], this.currentWeek[6])
+      .getAppointments(
+        this.doctorID,
+        this.currentWeek[0],
+        dayjs(this.currentWeek[6]).add(24, "hours").toDate()
+      )
       .subscribe((data) => {
         this.appointments = data;
       });
@@ -136,15 +147,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getReservationsForDay(date: Date): number {
-    let result = 0
+    let result = 0;
 
     for (let appointment of this.appointments) {
-      if (date.getDate() == appointment.date.getDate() && appointment.reservation) {
-        result += 1
+      if (
+        date.getDate() == appointment.date.getDate() &&
+        appointment.reservation
+      ) {
+        result += 1;
       }
     }
 
-    return result
+    return result;
   }
 
   getSlotsForTime(date: Date, hour: number): Consultation[] {

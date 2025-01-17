@@ -32,6 +32,7 @@ export class DoctorScheduleComponent implements OnInit, OnDestroy {
   selectableDurations = Array.from({ length: 8 }, (_, i) => i + 1);
   selectableGenders = ['Male', 'Female', 'Other']
   selectableReservationTypes = ['First Consultation', 'Follow-up visit', 'Chronic disease', 'Receipt'];
+  showCalendar = false
   private subscription!: Subscription;
 
   appointmentDetails = {
@@ -96,7 +97,7 @@ export class DoctorScheduleComponent implements OnInit, OnDestroy {
 
     if (this.hasTimeConflict(this.appointmentDetails.consultationLength)) {
       this.errorMessage =
-        "Wybrany czas koliduje z inną konsultacją. Wybierz inny czas.";
+        "There is a conflict with other reservations";
       return;
     }
 
@@ -116,8 +117,25 @@ export class DoctorScheduleComponent implements OnInit, OnDestroy {
   }
 
   hasTimeConflict(length: number): boolean {
-    // Placeholder: Replace this with actual logic to check for time conflicts
-    // This might involve checking against existing appointments for the selected doctor
     return false;
+  }
+
+  onDoctorChange() {
+    this.selectedStartDate = null
+    this.selectedStartTimeSlot = null
+
+    this.appointmentDetails = {
+      consultationLength: 0,
+      consultationType: "",
+      patientName: "",
+      patientGender: "",
+      patientAge: null,
+      doctorNotes: "",
+    };
+    this.errorMessage = null
+    this.showCalendar = false
+    setTimeout(() => {
+      this.showCalendar = true;
+    }, 10);
   }
 }

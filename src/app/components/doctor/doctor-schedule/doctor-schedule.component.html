@@ -1,6 +1,6 @@
 <div class="doctor-schedule-container">
   <label for="doctor-select" class="form-label">Select Doctor:</label>
-  <select id="doctor-select" class="form-input" [(ngModel)]="selectedDoctorId">
+  <select id="doctor-select" class="form-input" [(ngModel)]="selectedDoctorId" (change)="onDoctorChange()">
     <option *ngFor="let doctor of doctors" [value]="doctor.id">
       {{ doctor.nickname }}
     </option>
@@ -123,7 +123,7 @@
         </div>
       </div>
 
-      <div class="calendar-section">
+      <div class="calendar-section" *ngIf="showCalendar">
         <app-calendar
           [currentUser]="currentUser"
           [reloadService]="reloadService"
